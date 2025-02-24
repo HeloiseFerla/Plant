@@ -8,7 +8,28 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
-  password String
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  Plant     Plant[]
+  createdAt DateTime @default(now())
+}
+
+model Plant {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  plantId   String
+  createdAt DateTime     @default(now())
+  images    PlantImage[]
+}
+
+model PlantImage {
+  id         String   @id @default(cuid())
+  plantId    String
+  plant      Plant    @relation(fields: [plantId], references: [id])
+  filename   String
+  mimetype   String
+  data       Bytes
+  uploadedAt DateTime @default(now())
 }
